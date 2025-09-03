@@ -170,9 +170,19 @@ let database = {
 };
 
 // Variables globales
-let cart = [];
+
+// MODIFICADO: Cargar el carrito desde localStorage al iniciar la página.
+// JSON.parse convierte el texto de localStorage de nuevo a un array.
+// Si no hay nada guardado (||), se inicia como un array vacío [].
+let cart = JSON.parse(localStorage.getItem('farmaCloudCart')) || [];
 let currentPage = 'home';
 let filteredProducts = [...database.products];
+
+// AÑADIDO: Función para guardar el carrito en localStorage.
+// localStorage solo guarda texto, por eso usamos JSON.stringify para convertir el array.
+function saveCart() {
+    localStorage.setItem('farmaCloudCart', JSON.stringify(cart));
+}
 
 // Función para mostrar páginas
 function showPage(pageName) {
@@ -297,6 +307,7 @@ function addToCart(productId) {
     }
     
     updateCartCount();
+    saveCart(); // AÑADIDO: Guardar el carrito después de agregar un producto.
     
     // Mostrar feedback visual
     const button = event.target.closest('.add-to-cart');
@@ -369,6 +380,7 @@ function updateQuantity(productId, change) {
         } else {
             loadCart();
             updateCartCount();
+            saveCart(); // AÑADIDO: Guardar el carrito después de actualizar la cantidad.
         }
     }
 }
@@ -380,6 +392,7 @@ function setQuantity(productId, quantity) {
         item.quantity = parseInt(quantity) || 1;
         loadCart();
         updateCartCount();
+        saveCart(); // AÑADIDO: Guardar el carrito después de establecer la cantidad.
     }
 }
 
@@ -388,6 +401,7 @@ function removeFromCart(productId) {
     cart = cart.filter(item => item.id !== productId);
     loadCart();
     updateCartCount();
+    saveCart(); // AÑADIDO: Guardar el carrito después de remover un producto.
 }
 
 // Función para vaciar carrito
@@ -395,6 +409,7 @@ function clearCart() {
     cart = [];
     loadCart();
     updateCartCount();
+    saveCart(); // AÑADIDO: Guardar el carrito después de vaciarlo.
 }
 
 // Función para actualizar resumen del carrito
@@ -471,6 +486,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Limpiar carrito
             cart = [];
             updateCartCount();
+            saveCart(); // AÑADIDO: Asegurarse de que el carrito vacío también se guarde.
             
             // Ocultar checkout y mostrar confirmación
             hideCheckout();

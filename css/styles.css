@@ -1,16 +1,3 @@
-Claro, aquí tienes el código completo de tu archivo styles.css con todas las correcciones necesarias para que las imágenes se visualicen correctamente en todas las tarjetas y en el carrito, sin importar el tamaño de la pantalla.
-
-He hecho los siguientes cambios:
-
-He movido la clase .product-img-size fuera de la media query para que aplique en todas las pantallas.
-
-He ajustado la clase .product-image para que funcione como un contenedor para las imágenes, sin las propiedades de fondo de gradiente que ya no son necesarias.
-
-He añadido una regla para las imágenes dentro del carrito (.item-image img) para asegurar que también se vean correctamente.
-
-Copia y pega este código para reemplazar el contenido completo de tu archivo styles.css.
-
-CSS
 
 * {
     margin: 0;
@@ -422,7 +409,7 @@ nav a:hover, nav a.active {
 }
 
 .btn-secondary:hover {
-    background: #d1d5db;
+    background: #dbd1d1;
 }
 
 /* Modal */
