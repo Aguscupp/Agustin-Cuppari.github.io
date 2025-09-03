@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FarmaCloud - Inicio</title>
+    <title>FarmaCloud - Productos</title>
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
@@ -13,12 +13,12 @@
         <div class="container">
             <div class="logo">
                 <i class="fas fa-plus-circle"></i>
-                <h1>FarmaCloud</h1>
+                <h1>FarmaCloudd</h1>
             </div>
             <nav>
                 <ul>
-                    <li><a href="#" onclick="showPage('home')" class="active">Inicio</a></li>
-                    <li><a href="#" onclick="showPage('products')">Productos</a></li>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="productos.html" class="active">Productos</a></li>
                     <li><a href="#" onclick="showCart()" class="cart-link">
                         <i class="fas fa-shopping-cart"></i>
                         Carrito <span id="cart-count">0</span>
@@ -28,52 +28,29 @@
         </div>
     </header>
 
-    <!-- Página Principal -->
-    <div id="home-page" class="page active">
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="container">
-                <h2>Tu salud es nuestra prioridad</h2>
-                <p>Encuentra los mejores medicamentos y productos de cuidado personal</p>
-                <button class="cta-button" onclick="showPage('products')">Ver Productos</button>
-            </div>
-        </section>
-
-        <!-- Ofertas Especiales -->
-        <section class="offers">
-            <div class="container">
-                <h2>Ofertas Especiales</h2>
-                <div class="offers-grid" id="offers-grid">
-                    <!-- Las ofertas se cargan dinámicamente -->
-                </div>
-            </div>
-        </section>
-    </div>
-
     <!-- Página de Productos -->
-    <div id="products-page" class="page">
-        <div class="container">
-            <h2>Todos los Productos</h2>
-            
-            <!-- Filtros -->
-            <div class="filters">
-                <select id="category-filter" onchange="filterProducts()">
-                    <option value="">Todas las categorías</option>
-                    <option value="medicamentos">Medicamentos</option>
-                    <option value="cuidado-personal">Cuidado Personal</option>
-                    <option value="Bebes">Para Bebes</option>
-                    <option value="naturales">Naturales</option>
-                </select>
-            </div>
+    <div class="container">
+        <h2 style="margin: 2rem 0; text-align: center; color: #1e3a8a; font-size: 2.5rem;">Todos los Productos</h2>
+        
+        <!-- Filtros -->
+        <div class="filters">
+            <select id="category-filter" onchange="filterProducts()">
+                <option value="">Todas las categorías</option>
+                <option value="medicamentos">Medicamentos</option>
+                <option value="cuidado-personal">Cuidado Personal</option>
+                <option value="bebe-mama">Bebé y Mamá</option>
+                <option value="naturales">Naturales</option>
+            </select>
+        </div>
 
-            <div class="products-grid" id="products-grid">
-            </div>
+        <div class="products-grid" id="products-grid">
         </div>
     </div>
 
-    <!-- Carrito de Compras -->
-    <div id="cart-page" class="page">
-        <div class="container">
+    <!-- Carrito de Compras Modal -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="hideCart()">&times;</span>
             <h2>Carrito de Compras</h2>
             <div class="cart-content">
                 <div class="cart-items" id="cart-items">
@@ -142,7 +119,7 @@
         </div>
     </div>
 
-    <!-- Modal de Confirmación -->
+    <!-- Modal para confirmar -->
     <div id="confirmation-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="hideConfirmation()">&times;</span>
@@ -157,5 +134,23 @@
     </div>
 
     <script src="js/script.js"></script>
+    <script>
+        // iniciar pagina de prodcutos
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProducts();
+            updateCartCount();
+        });
+
+        // Funcion especifica para mostral el modal en el carrito
+        function showCart() {
+            document.getElementById('cart-modal').style.display = 'block';
+            loadCart();
+        }
+
+        // Funcion que muestra el cierre del carrito
+        function hideCart() {
+            document.getElementById('cart-modal').style.display = 'none';
+        }
+    </script>
 </body>
 </html>
