@@ -169,35 +169,26 @@ let database = {
     ]
 };
 
-// Variables globales
-
-// MODIFICADO: Cargar el carrito desde localStorage al iniciar la página.
-// JSON.parse convierte el texto de localStorage de nuevo a un array.
-// Si no hay nada guardado (||), se inicia como un array vacío [].
-let cart = JSON.parse(localStorage.getItem('farmaCloudCart')) || [];
+// 1. Cargar el carrito desde localStorage al inicio
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
 let currentPage = 'home';
 let filteredProducts = [...database.products];
 
-// AÑADIDO: Función para guardar el carrito en localStorage.
-// localStorage solo guarda texto, por eso usamos JSON.stringify para convertir el array.
+// 2. Función para guardar el carrito en localStorage
 function saveCart() {
-    localStorage.setItem('farmaCloudCart', JSON.stringify(cart));
+    localStorage.setItem('cart', JSON.stringify(cart));
 }
 
-// Función para mostrar páginas
+// Resto de tus funciones sin cambios significativos en su lógica interna, solo se añaden las llamadas a `saveCart()`
 function showPage(pageName) {
-    // Ocultar todas las páginas
     const pages = document.querySelectorAll('.page');
     pages.forEach(page => page.classList.remove('active'));
     
-    // Mostrar la página solicitada
     document.getElementById(pageName + '-page').classList.add('active');
     
-    // Actualizar navegación activa
     const navLinks = document.querySelectorAll('nav a');
     navLinks.forEach(link => link.classList.remove('active'));
     
-    // Encontrar el enlace correspondiente y marcarlo como activo
     const activeLink = document.querySelector(`nav a[onclick="showPage('${pageName}')"]`);
     if (activeLink) {
         activeLink.classList.add('active');
@@ -205,7 +196,6 @@ function showPage(pageName) {
     
     currentPage = pageName;
     
-    // Cargar contenido específico de la página
     if (pageName === 'home') {
         loadOffers();
     } else if (pageName === 'products') {
@@ -213,18 +203,15 @@ function showPage(pageName) {
     }
 }
 
-// Función para mostrar el carrito
 function showCart() {
     showPage('cart');
     loadCart();
     
-    // Actualizar navegación para el carrito
     const navLinks = document.querySelectorAll('nav a');
     navLinks.forEach(link => link.classList.remove('active'));
     document.querySelector('.cart-link').classList.add('active');
 }
 
-// Función para cargar ofertas en la página principal
 function loadOffers() {
     const offersGrid = document.getElementById('offers-grid');
     if (!offersGrid) return;
@@ -252,7 +239,6 @@ function loadOffers() {
     `).join('');
 }
 
-// Función para cargar todos los productos
 function loadProducts() {
     const productsGrid = document.getElementById('products-grid');
     if (!productsGrid) return;
@@ -278,7 +264,6 @@ function loadProducts() {
     `).join('');
 }
 
-// Función para filtrar productos
 function filterProducts() {
     const categoryFilter = document.getElementById('category-filter');
     if (!categoryFilter) return;
@@ -292,7 +277,6 @@ function filterProducts() {
     loadProducts();
 }
 
-// Función para agregar productos al carrito
 function addToCart(productId) {
     const product = database.products.find(p => p.id === productId);
     const existingItem = cart.find(item => item.id === productId);
@@ -306,10 +290,11 @@ function addToCart(productId) {
         });
     }
     
+    // 3. Guardar el carrito actualizado después de añadir un producto
+    saveCart();
+
     updateCartCount();
-    saveCart(); // AÑADIDO: Guardar el carrito después de agregar un producto.
     
-    // Mostrar feedback visual
     const button = event.target.closest('.add-to-cart');
     const originalText = button.innerHTML;
     button.innerHTML = '<i class="fas fa-check"></i> Agregado';
@@ -321,7 +306,6 @@ function addToCart(productId) {
     }, 1500);
 }
 
-// Función para actualizar contador del carrito
 function updateCartCount() {
     const count = cart.reduce((total, item) => total + item.quantity, 0);
     const cartCountElement = document.getElementById('cart-count');
@@ -330,7 +314,6 @@ function updateCartCount() {
     }
 }
 
-// Función para cargar el carrito
 function loadCart() {
     const cartItems = document.getElementById('cart-items');
     if (!cartItems) return;
@@ -370,7 +353,6 @@ function loadCart() {
     updateCartSummary();
 }
 
-// Función para actualizar cantidad
 function updateQuantity(productId, change) {
     const item = cart.find(item => item.id === productId);
     if (item) {
@@ -380,39 +362,39 @@ function updateQuantity(productId, change) {
         } else {
             loadCart();
             updateCartCount();
-            saveCart(); // AÑADIDO: Guardar el carrito después de actualizar la cantidad.
         }
+        // 4. Guardar el carrito después de actualizar la cantidad
+        saveCart();
     }
 }
 
-// Función para establecer cantidad específica
 function setQuantity(productId, quantity) {
     const item = cart.find(item => item.id === productId);
     if (item) {
         item.quantity = parseInt(quantity) || 1;
         loadCart();
         updateCartCount();
-        saveCart(); // AÑADIDO: Guardar el carrito después de establecer la cantidad.
+        // 5. Guardar el carrito después de establecer una cantidad
+        saveCart();
     }
 }
 
-// Función para remover del carrito
 function removeFromCart(productId) {
     cart = cart.filter(item => item.id !== productId);
     loadCart();
     updateCartCount();
-    saveCart(); // AÑADIDO: Guardar el carrito después de remover un producto.
+    // 6. Guardar el carrito después de remover un producto
+    saveCart();
 }
 
-// Función para vaciar carrito
 function clearCart() {
     cart = [];
     loadCart();
     updateCartCount();
-    saveCart(); // AÑADIDO: Guardar el carrito después de vaciarlo.
+    // 7. Limpiar el carrito de localStorage también
+    localStorage.removeItem('cart');
 }
 
-// Función para actualizar resumen del carrito
 function updateCartSummary() {
     const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
     const shipping = cart.length > 0 ? 15 : 0;
@@ -427,7 +409,6 @@ function updateCartSummary() {
     if (totalElement) totalElement.textContent = `${total}`;
 }
 
-// Función para mostrar checkout
 function showCheckout() {
     if (cart.length === 0) {
         alert('Tu carrito está vacío');
@@ -436,30 +417,25 @@ function showCheckout() {
     document.getElementById('checkout-modal').style.display = 'block';
 }
 
-// Función para ocultar checkout
 function hideCheckout() {
     document.getElementById('checkout-modal').style.display = 'none';
 }
 
-// Función para mostrar confirmación
 function showConfirmation() {
     document.getElementById('confirmation-modal').style.display = 'block';
 }
 
-// Función para ocultar confirmación
 function hideConfirmation() {
     document.getElementById('confirmation-modal').style.display = 'none';
     window.location.href = 'index.html';
 }
 
-// Manejar envío del formulario de checkout
 document.addEventListener('DOMContentLoaded', function() {
     const checkoutForm = document.getElementById('checkout-form');
     if (checkoutForm) {
         checkoutForm.addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Recopilar datos del formulario
             const formData = new FormData(this);
             const userData = {
                 nombre: formData.get('nombre'),
@@ -469,7 +445,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 metodoPago: formData.get('metodo-pago')
             };
             
-            // Crear orden
             const order = {
                 id: Date.now(),
                 user: userData,
@@ -479,25 +454,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 status: 'procesando'
             };
             
-            // Guardar en base de datos simulada
             database.users.push(userData);
             database.orders.push(order);
             
-            // Limpiar carrito
+            // 8. Limpiar el carrito y el localStorage después de una compra exitosa
             cart = [];
             updateCartCount();
-            saveCart(); // AÑADIDO: Asegurarse de que el carrito vacío también se guarde.
+            localStorage.removeItem('cart');
             
-            // Ocultar checkout y mostrar confirmación
             hideCheckout();
             showConfirmation();
             
-            // Reset form
             this.reset();
         });
     }
 
-    // Cerrar modales al hacer clic fuera
     window.addEventListener('click', function(e) {
         const checkoutModal = document.getElementById('checkout-modal');
         const confirmationModal = document.getElementById('confirmation-modal');
@@ -514,16 +485,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Inicializar la aplicación
+    // 9. Inicializar el contador del carrito al cargar la página
     updateCartCount();
     
-    // Si estamos en index, cargar ofertas
     if (document.getElementById('offers-grid')) {
         loadOffers();
     }
     
-    // Si estamos en productos, cargar productos
     if (document.getElementById('products-grid')) {
         loadProducts();
     }
+    
 });
