@@ -47,7 +47,7 @@ let database = {
             discount: "30%"
         },
         
-        // Cuidado Personal
+        // Cuidado Personal //
         {
             id: 5,
             name: "Shampoo Anticaspa",
@@ -90,7 +90,7 @@ let database = {
             isOffer: false
         },
 
-        // Para Bebes
+        // Para Bebes //
         {
             id: 9,
             name: "Pañales Talla M",
@@ -123,7 +123,7 @@ let database = {
             isOffer: false
         },
 
-        // Naturales
+        // Naturales //
         {
             id: 12,
             name: "Vitamina C 1000mg",
@@ -169,17 +169,17 @@ let database = {
     ]
 };
 
-// 1. Cargar el carrito desde localStorage al inicio
+// carga del carrito al localstorage //
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 let currentPage = 'home';
 let filteredProducts = [...database.products];
 
-// 2. Función para guardar el carrito en localStorage
+//Funcion que guarda el carrito en el localstorage //
 function saveCart() {
     localStorage.setItem('cart', JSON.stringify(cart));
 }
 
-// Resto de tus funciones sin cambios significativos en su lógica interna, solo se añaden las llamadas a `saveCart()`
+// Funciones para corregir //
 function showPage(pageName) {
     const pages = document.querySelectorAll('.page');
     pages.forEach(page => page.classList.remove('active'));
@@ -290,7 +290,7 @@ function addToCart(productId) {
         });
     }
     
-    // 3. Guardar el carrito actualizado después de añadir un producto
+    // Para guardar el carrito actualizado luego de ingresar un prodcuto //
     saveCart();
 
     updateCartCount();
@@ -352,6 +352,7 @@ function loadCart() {
     
     updateCartSummary();
 }
+// Funciones del carrito al realizar acciones //
 
 function updateQuantity(productId, change) {
     const item = cart.find(item => item.id === productId);
@@ -363,7 +364,6 @@ function updateQuantity(productId, change) {
             loadCart();
             updateCartCount();
         }
-        // 4. Guardar el carrito después de actualizar la cantidad
         saveCart();
     }
 }
@@ -374,7 +374,6 @@ function setQuantity(productId, quantity) {
         item.quantity = parseInt(quantity) || 1;
         loadCart();
         updateCartCount();
-        // 5. Guardar el carrito después de establecer una cantidad
         saveCart();
     }
 }
@@ -383,7 +382,6 @@ function removeFromCart(productId) {
     cart = cart.filter(item => item.id !== productId);
     loadCart();
     updateCartCount();
-    // 6. Guardar el carrito después de remover un producto
     saveCart();
 }
 
@@ -391,7 +389,6 @@ function clearCart() {
     cart = [];
     loadCart();
     updateCartCount();
-    // 7. Limpiar el carrito de localStorage también
     localStorage.removeItem('cart');
 }
 
@@ -457,7 +454,7 @@ document.addEventListener('DOMContentLoaded', function() {
             database.users.push(userData);
             database.orders.push(order);
             
-            // 8. Limpiar el carrito y el localStorage después de una compra exitosa
+            // Limpiar el carrito luego de realizar una compra que termine ene xito //
             cart = [];
             updateCartCount();
             localStorage.removeItem('cart');
@@ -485,7 +482,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // 9. Inicializar el contador del carrito al cargar la página
     updateCartCount();
     
     if (document.getElementById('offers-grid')) {

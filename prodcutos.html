@@ -28,7 +28,7 @@
         </div>
     </header>
 
-    <!-- Página de Productos -->
+    <!-- Pagina de Productos -->
     <div class="container">
         <h2 style="margin: 2rem 0; text-align: center; color: #1e3a8a; font-size: 2.5rem;">Todos los Productos</h2>
         
@@ -47,7 +47,7 @@
         </div>
     </div>
 
-    <!-- Carrito de Compras Modal -->
+    <!-- Carrito para las compras -->
     <div id="cart-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="hideCart()">&times;</span>
@@ -77,7 +77,7 @@
         </div>
     </div>
 
-    <!-- Formulario de Checkout -->
+    <!-- Formulario -->
     <div id="checkout-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="hideCheckout()">&times;</span>
@@ -119,7 +119,7 @@
         </div>
     </div>
 
-    <!-- Modal para confirmar -->
+    <!-- Modal para confirmacion -->
     <div id="confirmation-modal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="hideConfirmation()">&times;</span>
@@ -135,19 +135,19 @@
 
     <script src="js/script.js"></script>
     <script>
-        // iniciar pagina de prodcutos
+        // iniciador de pagina de productos
         document.addEventListener('DOMContentLoaded', function() {
             loadProducts();
             updateCartCount();
         });
 
-        // Funcion especifica para mostral el modal en el carrito
+        // Funcion especifica que muestra el modal en el carrito
         function showCart() {
             document.getElementById('cart-modal').style.display = 'block';
             loadCart();
         }
 
-        // Funcion que muestra el cierre del carrito
+        // Funcion para mostrar el cierre en el carrito del modal
         function hideCart() {
             document.getElementById('cart-modal').style.display = 'none';
         }
